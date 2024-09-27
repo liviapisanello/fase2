@@ -26,9 +26,19 @@ jobs:
         python -m pip install --upgrade pip
         pip install flake8 pytest
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-    
-    - name: Teste 
-      run: coverage run app_test.py
+
+    - name: Render Deploy Action
+      uses: johnbeynon/render-deploy-action@v0.0.8
+      with:
+        service-id: srv-crddqnrtq21c73d2d5ag
+        api-key: rnd_IcbrR2EIFa6apZawYZdu2bdNApCv
+  
+    - name: Deploy no EC2 -AWS
+      run: |
+            echo "Conectando no EC2"
+            echo "${{secrets.AWS_KEY_SALAG}}" > private_key && chmod 600 private_key
+            ssh -o StrictHostKeyChecking=no -i private_key ubuntu@ec2-54-146-136-76.compute-1.amazonaws.com "
+                  cd python_flask/;git pull;./executar.sh"
 
     - name: Relatorio do teste
       run: coverage report -m
