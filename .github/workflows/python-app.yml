@@ -39,6 +39,3 @@ jobs:
             echo "${{secrets.AWS_KEY_SALAG}}" > private_key && chmod 600 private_key
             ssh -o StrictHostKeyChecking=no -i private_key ubuntu@ec2-54-146-136-76.compute-1.amazonaws.com "
                   cd python_flask/;git pull;./executar.sh"
-
-    - name: Relatorio do teste
-      run: coverage report -m
